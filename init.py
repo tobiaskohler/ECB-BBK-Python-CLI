@@ -1,15 +1,35 @@
 import argparse
 import ast
-from getInflation import get_inflation_data
+from ECBClient import ECBClientClass
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Retrieves inflation index data (ICP) from primary source ECB and plots year-on-year inflation rate.')
-    parser.add_argument('-b', '--begin', type=str, help='Start date in YYYY-MM format', default=None)
-    parser.add_argument('-e', '--end', type=str, help='End date in YYYY-MM format', default=None)
-    parser.add_argument('-s', '--save-output', type=str, help='Saves the created image (.png) and interactive HTML to output folder (Default is false).', default='False')
-    args = parser.parse_args()
-    
-    save_output = ast.literal_eval(args.save_output)
 
-    get_inflation_data(args.begin, args.end, save_output)
+    ecb_client = ECBClientClass()
+    
+    parser = argparse.ArgumentParser(description='Interface to retrieve economic data from official SDMX API of European Central Bank. Currently supports inflation index data (INX) and yield curve data (YC). When no period is defined, the maximum available data is retrieved.')
+    
+    group_inflation = parser.add_argument_group('Inflation Options')
+    group_inflation.add_argument('-i', '--inflation', help='Retrieves inflation data. Default is 2Y10Y.', action='store_true')
+
+    group_yield = parser.add_argument_group('Yield Options')
+    group_yield.add_argument('-y', '--yield-curve', help='Retrieves yield curve data.', action='store_true')
+    group_yield.add_argument('-s', '--spread', help='Returns yield spread.', action='store_true')
+    group_yield.add_argument('-st', '--shortterm', help='Define short-term par yield', choices=['3M', '6M', '9M', '1Y', '2Y'], default='2Y')
+    group_yield.add_argument('-lt', '--longterm', help='Define long-term par yield', choices=['10Y', '15Y', '20Y', '30Y'], default='10Y')
+
+    parser.add_argument('-b', '--begin', type=str, help='Start date in YYYY-MM format. Can be used with each flag. When provided, --end must be defined as well.', default=None)
+    parser.add_argument('-e', '--end', type=str, help='End date in YYYY-MM format. Can be used with each flag. When provided, --begin must be defined as well.', default=None)
+
+    args = parser.parse_args()
+
+    if args.inflation:
+        ecb_client.get_inflation_data(args.begin, args.end)
+    
+    elif args.yield_curve:
+        ecb_client.get_yield_data(args.spread, args.begin, args.end, args.shortterm, args.longterm)
+
+
+    
+
+
