@@ -4,15 +4,14 @@ import plotly.graph_objects as go
 import pandas as pd
 import traceback
 import os
+import multiprocessing
 
 from helperFunctions import log_stats
-
 
 
 class ECBClientClass():
     def __init__(self):
         self.ecb = sdmx.Client("ECB")
-        
         
         self.folder_name = "output"
         self.save_dir = os.path.isdir(self.folder_name)
@@ -21,7 +20,7 @@ class ECBClientClass():
         if not self.save_dir:
             os.makedirs(self.folder_name)
             print(f'Created folder {self.current_dir}/{self.folder_name}')
-        
+
 
     @log_stats
     def get_inflation_data(self, startPeriod="1980-01", endPeriod="2099-12", save=False) -> pd.DataFrame:
@@ -94,6 +93,7 @@ class ECBClientClass():
        
     @log_stats
     def get_yield_data(self, spread=False, startPeriod="1980-01", endPeriod="2099-12", short_term="2Y", long_term="10Y", save=False) -> pd.DataFrame:
+
         
         try:
             
@@ -103,9 +103,10 @@ class ECBClientClass():
 
             short_term_data = self.ecb.data("YC", key=short_term_key, params=params).data[0]
             df_short_term_data = sdmx.to_pandas(short_term_data, datetime="TIME_PERIOD")
-
+            
             long_term_data = self.ecb.data("YC", key=long_term_key, params=params).data[0]
             df_long_term_data = sdmx.to_pandas(long_term_data, datetime="TIME_PERIOD")
+
 
             ## Short Term Yield
             index_list_short_term_data = []
@@ -228,5 +229,6 @@ if __name__ == '__main__':
     
     ecbClient = ECBClientClass()
     
-    ecbClient.get_inflation_data(save=True)
-    ecbClient.get_yield_data(save=True)
+    #ecbClient.get_inflation_data(save=True)
+    ecbClient.get_yield_data(short_term='1Y', long_term='10Y')
+    
