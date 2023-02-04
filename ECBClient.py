@@ -217,8 +217,77 @@ class ECBClientClass():
 
         
     @log_stats
-    def get_exchange_rate_data(self):
-        None
+    def get_exchange_rate_data(self, fx='USD', startPeriod="2001-01", endPeriod="2023-12", save=False):
+        
+        try:
+            params = dict(startPeriod=startPeriod, endPeriod=endPeriod)
+
+            key = f'D.{fx}.EUR.SP00.A'
+            
+            fx_data = self.ecb.data("EXR", key=key, params=params).data[0]
+            df_fx_data = sdmx.to_pandas(fx_data, datetime="TIME_PERIOD")
+            
+            begin_date = df_fx_data.index[0].strftime('%Y-%m-%d')
+            end_date = df_fx_data.index[-1].strftime('%Y-%m-%d')
+            
+            index_list_fx_data = []
+            for index, _ in df_fx_data.iterrows():
+                index_list_fx_data.append(index)
+            
+            value_list_fx_data = []
+            for _, value in df_fx_data.iterrows():
+                for i in value:
+                    value_list_fx_data.append(i)
+
+                
+            df_fx_data = pd.DataFrame(value_list_fx_data, index=index_list_fx_data, columns=[f'{fx}.EUR'])
+
+            print(df_fx_data)
+            
+            fig = px.line(df_fx_data, x=df_fx_data.index, y=[f'{fx}.EUR'], labels={'value': f'(1 EUR costs .. {fx}', 'index': 'Period'})
+            
+            fig.update_layout(template='plotly_white', width=600, height=600, title_x=0.5, hovermode="x unified")
+            
+            fig.update_layout(template='plotly_white', width=600, height=600, title_x=0.5, hovermode="x unified", showlegend=False)
+
+            fig.update_layout(
+                legend_title=f"Currency Pair",
+
+                title=go.layout.Title(
+                    text=f"<b>EUR/{fx}</b><br><sup>{begin_date} - {end_date}</sup>",
+                    xref="paper",
+                    x=0.5
+                ),
+                yaxis=go.layout.YAxis(
+                title=go.layout.yaxis.Title(
+                    text=f'1 EUR costs .. {fx}'
+                    )
+                ),
+                xaxis=go.layout.XAxis(
+                title=go.layout.xaxis.Title(
+                    text='Period'
+                    )
+                )
+            )
+            
+            fig.show()
+
+            save = input("Save output to the current folder? (y/n)")
+            
+            if save.lower() == 'y':
+                
+                fig.write_image(f"{self.current_dir}/{self.folder_name}/FX_{fx}_EUR_{begin_date}-{end_date}.png")
+                fig.write_html(f"{self.current_dir}/{self.folder_name}/FX_{fx}_EUR_{begin_date}-{end_date}.html")
+                df_fx_data.to_csv(f"{self.current_dir}/{self.folder_name}/FX_{fx}_EUR_{begin_date}-{end_date}.csv", index=True)
+                print(f"Output saved to {self.current_dir}/{self.folder_name}.")
+            
+        except Exception as e:
+                
+            error_msg = f"Unexpected Error: {e}\nTraceback: {traceback.format_exc()}"
+            print(error_msg)
+            
+            return error_msg
+        
         
     @log_stats
     def get_gdp_data(self):
@@ -230,5 +299,5 @@ if __name__ == '__main__':
     ecbClient = ECBClientClass()
     
     #ecbClient.get_inflation_data(save=True)
-    ecbClient.get_yield_data(short_term='1Y', long_term='10Y')
-    
+    #ecbClient.get_yield_data(short_term='1Y', long_term='10Y')
+    ecbClient.get_exchange_rate_data(fx='CHF', startPeriod="2003-01", endPeriod="2017-12")

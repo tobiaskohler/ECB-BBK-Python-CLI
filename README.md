@@ -6,6 +6,7 @@ This repository provides a command-line interface to retrieve economic data from
 ## Features
 - Retrieve inflation index data (INX) 
 - Retrieve yield curve data (YC) 
+- Retrieve exchange rate data (EXR)
 - Define custom start and end dates for data retrieval 
 - Option to calculate yield spread 
 - Option to save output as .PNG, interactive .HTML and time series as .CSV
@@ -54,7 +55,7 @@ Yield Options:
 ## Examples
 
 ### 1. Inflation data
-Retrieve information about inflation rate in Eurozone using maximum available data history:
+Retrieve information about monthly inflation rate in Eurozone using maximum available data history:
 
 ```
 > init .py -b 2015-01 -e 2022-12
@@ -74,7 +75,7 @@ Save output to the current folder? (y/n)
 
 
 ### 2. Yield data
-Retrieve information about (par) yield curve in Eurozone using data from 2005-01 to 2021-12:
+Retrieve information about daily (par) yield curve in Eurozone using data from 2005-01 to 2021-12:
 
 ```
 > init.py -y -b 2005-01 -e 2021-12
@@ -85,7 +86,7 @@ Outputs:
 ![Example 2](Yield_curve_2Y10Y_2021-12-31-2005-01-03_spread-False.png)
 
 ### 3. Yield data (spread)
-Retrieve information about (par) yield spread (6M5Y):
+Retrieve information about daily (par) yield spread (6M5Y):
 
 ```
 > init.py -y -s -st 6M -lt 5Y
@@ -95,8 +96,29 @@ Outputs
 
 ![Example 3](Yield_curve_6M5Y_2023-02-02-2004-09-06_spread-True.png)
 
+### 4. Exchange rate data (FX)
+Retrieve information about daily EUR/USD exchange rate with maximum available time series data:
+
+```
+> init.py -fx
+```
+
+Outputs:
+
+![Example 4](./FX_USD_EUR_1999-01-04-2023-02-03.png)
+
+### 5. Exchange rate data for e.g. GBP
+Retrieve information about daily EUR/GBP exchange rate during January 2005 till December 2010:
+
+```
+> init.py -fx -c GBP -b 2005-01 -e 2010-12
+```
+
+Outputs:
+
+![Example 4](./FX_GBP_EUR_2005-01-03-2010-12-31.png)
+
 ## Future implementations
-- get EXR data
 - get GDP data
 
 
