@@ -46,7 +46,7 @@ class ECBClientClass():
             inflation_index['HICP_ann_delta'] = inflation_index['HICP'].pct_change(12)*100
             inflation_index['HICP_ann_delta'] = inflation_index['HICP_ann_delta'].dropna()
             begin_date = inflation_index.index[-1].strftime('%Y-%m-%d')
-            end_date = inflation_index.index[0].strftime('%Y-%m-%d')
+            end_date = inflation_index.index[12].strftime('%Y-%m-%d')
 
             fig = px.line(inflation_index, x=inflation_index.index, y='HICP_ann_delta')
             fig.update_layout(template='plotly_white', width=600, height=600, title_x=0.5, hovermode="x unified")
