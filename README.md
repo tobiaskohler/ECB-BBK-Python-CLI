@@ -32,24 +32,25 @@ To generate a plot of the inflation rate in the Eurozone with total available da
 options:
   -h, --help            show this help message and exit
   -b BEGIN, --begin BEGIN
-                        Start date in YYYY-MM format. Can be used with each flag. When provided,
-                        --end must be defined as well.
-  -e END, --end END     End date in YYYY-MM format. Can be used with each flag. When provided,
-                        --begin must be defined as well.
+                        Start date in YYYY-MM format. Can be used with each flag. When provided, --end must be defined as well.
+  -e END, --end END     End date in YYYY-MM format. Can be used with each flag. When provided, --begin must be defined as well.
 
-Inflation Options:
-  -i, --inflation       Retrieves inflation data. When no period is provided, it retrieves maximum
-                        available data history.
+INFLATION:
+  -i, --inflation       Retrieves inflation data. When no period is provided, it retrieves maximum available data history.
 
-Yield Options:
-  -y, --yield-curve     Retrieves yield curve data. When no period is provided, it retrieves
-                        maximum available data history. When neither --shortterm nor --longterm is
-                        given, it retrieves the 2Y10Y Par Yield.
+YIELD:
+  -y, --yield-curve     Retrieves yield curve data. When no period is provided, it retrieves maximum available data history. When neither --shortterm nor --longterm
+                        is given, it retrieves the 2Y10Y Par Yield.
   -s, --spread          Returns yield spread.
   -st {3M,6M,9M,1Y,2Y}, --shortterm {3M,6M,9M,1Y,2Y}
                         Define short-term par yield
-  -lt {10Y,15Y,20Y,30Y}, --longterm {10Y,15Y,20Y,30Y}
+  -lt {5Y,10Y,15Y,20Y,30Y}, --longterm {5Y,10Y,15Y,20Y,30Y}
                         Define long-term par yield
+
+EXCHANGE RATE:
+  -fx, --exchange-rate  Retrieves exchange rate data. When no period is provided, it retrieves maximum available data history.
+  -c CURRENCY, --currency CURRENCY
+                        Define the currency for which exchange rate data should be retrieved
 ```
 
 ## Examples
