@@ -4,7 +4,6 @@ import plotly.graph_objects as go
 import pandas as pd
 import traceback
 import os
-import multiprocessing
 
 from helperFunctions import log_stats
 
@@ -98,8 +97,8 @@ class ECBClientClass():
         try:
             
             params = dict(startPeriod=startPeriod, endPeriod=endPeriod)
-            short_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'PY_{short_term}')
-            long_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'PY_{long_term}')
+            short_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'SR_{short_term}')
+            long_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'SR_{long_term}')
 
             short_term_data = self.ecb.data("YC", key=short_term_key, params=params).data[0]
             df_short_term_data = sdmx.to_pandas(short_term_data, datetime="TIME_PERIOD")
@@ -154,7 +153,7 @@ class ECBClientClass():
                     legend_title="Maturity",
 
                     title=go.layout.Title(
-                        text=f"<b>Eurozone: (Par) yield curve</b><br><sup>{end_date} - {begin_date}</sup>",
+                        text=f"<b>Eurozone: Yield curve (spot rate)</b><br><sup>{end_date} - {begin_date}</sup>",
                         xref="paper",
                         x=0.5
                     ),
@@ -179,7 +178,7 @@ class ECBClientClass():
                     legend_title=f"{long_term} minus {short_term}",
 
                     title=go.layout.Title(
-                        text=f"<b>Eurozone: (Par) yield spread</b><br><sup>{end_date} - {begin_date}</sup>",
+                        text=f"<b>Eurozone: Yield spread (spot rate)</b><br><sup>{end_date} - {begin_date}</sup>",
                         xref="paper",
                         x=0.5
                     ),
@@ -287,17 +286,12 @@ class ECBClientClass():
             print(error_msg)
             
             return error_msg
-        
-        
-    @log_stats
-    def get_gdp_data(self):
-        None
 
-
+        
 if __name__ == '__main__':
     
     ecbClient = ECBClientClass()
     
     #ecbClient.get_inflation_data(save=True)
     #ecbClient.get_yield_data(short_term='1Y', long_term='10Y')
-    ecbClient.get_exchange_rate_data(fx='CHF', startPeriod="2003-01", endPeriod="2017-12")
+    #ecbClient.get_exchange_rate_data(fx='CHF', startPeriod="2003-01", endPeriod="2017-12")

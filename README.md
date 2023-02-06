@@ -40,12 +40,12 @@ INFLATION:
 
 YIELD:
   -y, --yield-curve     Retrieves yield curve data. When no period is provided, it retrieves maximum available data history. When neither --shortterm nor --longterm
-                        is given, it retrieves the 2Y10Y Par Yield.
+                        is given, it retrieves the 2Y10Y Spot Yield.
   -s, --spread          Returns yield spread.
   -st {3M,6M,9M,1Y,2Y}, --shortterm {3M,6M,9M,1Y,2Y}
-                        Define short-term par yield
+                        Define short-term spot yield
   -lt {5Y,10Y,15Y,20Y,30Y}, --longterm {5Y,10Y,15Y,20Y,30Y}
-                        Define long-term par yield
+                        Define long-term spot yield
 
 EXCHANGE RATE:
   -fx, --exchange-rate  Retrieves exchange rate data. When no period is provided, it retrieves maximum available data history.
@@ -76,7 +76,7 @@ Save output to the current folder? (y/n)
 
 
 ### 2. Yield data
-Retrieve information about daily (par) yield curve in Eurozone using data from 2005-01 to 2021-12:
+Retrieve information about daily (spot) yield curve in Eurozone using data from 2005-01 to 2021-12:
 
 ```
 > init.py -y -b 2005-01 -e 2021-12
@@ -87,7 +87,7 @@ Outputs:
 ![Example 2](Yield_curve_2Y10Y_2021-12-31-2005-01-03_spread-False.png)
 
 ### 3. Yield data (spread)
-Retrieve information about daily (par) yield spread (6M5Y):
+Retrieve information about daily (spot) yield spread (6M5Y):
 
 ```
 > init.py -y -s -st 6M -lt 5Y
@@ -119,8 +119,6 @@ Outputs:
 
 ![Example 4](./FX_GBP_EUR_2005-01-03-2010-12-31.png)
 
-## Future implementations
-- get GDP data
 
 
 ## Feedback & Contribution
