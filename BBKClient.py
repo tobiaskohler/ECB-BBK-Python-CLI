@@ -22,6 +22,7 @@ class BBKClientClass():
             print(f'Created folder {self.current_dir}/{self.folder_name}')
             
 
+    @log_stats
     def get_euribor_data(self, startPeriod="1980-01-01", endPeriod="2099-12-31", short_term='3M', long_term=None, spread=None):
         
         
@@ -162,7 +163,7 @@ class BBKClientClass():
             
             return error_msg
 
-
+    @log_stats 
     def get_eonia_data(self, startPeriod="2021-01-01", endPeriod="2022-12-31"):
         """
         The Euro Short-Term Rate (€STR) published by the European Central Bank is determined as a substitute interest rate for the Euro Overnight Index Average (EONIA). Since October 2, 2019, the EONIA has been calculated as €STR + 8.5bp.) 
