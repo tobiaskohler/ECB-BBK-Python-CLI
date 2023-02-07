@@ -6,7 +6,6 @@ import traceback
 import os
 
 from helperFunctions import log_stats
-#test
 
 class ECBClientClass():
     def __init__(self):
