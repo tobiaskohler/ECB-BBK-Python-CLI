@@ -74,7 +74,7 @@ EONIA:
 Retrieve information about monthly inflation rate in Eurozone using maximum available data history:
 
 ```
-> python init .py -b 2015-01 -e 2022-12
+> python init.py -i -b 2015-01 -e 2022-12
 ```
 
  Outputs:
