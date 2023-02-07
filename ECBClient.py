@@ -96,6 +96,14 @@ class ECBClientClass():
         
         try:
             
+            supported_shortterm = ['3M', '6M', '9M', '1Y', '2Y']
+            supported_longterm = ['5Y','10Y', '15Y', '20Y', '30Y']
+            
+            if short_term not in supported_shortterm:
+                    raise Exception(f"Invalid short term: {short_term}. Valid values are: {supported_shortterm}")
+            if long_term not in supported_longterm:
+                    raise Exception(f"Invalid long term: {long_term}. Valid values are: {supported_longterm}")
+            
             params = dict(startPeriod=startPeriod, endPeriod=endPeriod)
             short_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'SR_{short_term}')
             long_term_key = dict(REF_AREA='U2', INSTRUMENT_FM='G_N_A', DATA_TYPE_FM=f'SR_{long_term}')
